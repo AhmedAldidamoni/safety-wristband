@@ -1,0 +1,82 @@
+# Generated files and directories
+**/build/
+**/generated/
+.gradle/
+.cxx/
+.externalNativeBuild/
+
+# IntelliJ/Android Studio files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Local configuration files
+local.properties
+
+# Keystore and signing files (sensitive credentials)
+*.jks
+*.keystore
+debug.keystore
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Java and Kotlin class files
+*.dex
+*.class
+
+# Kotlin-specific files
+.kotlin/
+
+# Android NDK
+ndkBuild/
+
+# Proguard configuration files (optional, uncomment if not needed in version control)
+# proguard-rules.pro
+
+# Specific .idea files to ignore (if not already ignored by `.idea/`)
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/gradle.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/httpRequests/
+
+# Build directories (redundant with `**/build/`, but kept for clarity)
+/build
+/captures
+app/build/
+*/build/
+
+# Generated captures & temp files
+.navigation/
+captures/
+outputs/
+
+# Crashlytics / Fabric configuration
+fabric.properties
+crashlytics.properties
+
+# Log files
+*.log
+
+# Database
+*.sql
+*.sqlite
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Test and coverage reports
+**/coverage/
+
+# Google Services configuration file (ignored in this public repo to prevent credential leaking)
+google-services.json

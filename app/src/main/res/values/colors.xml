@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="safety_teal">#0F766E</color>
+    <color name="alert_red">#DC2626</color>
+    <color name="warning_amber">#D97706</color>
+    <color name="ok_green">#16A34A</color>
+</resources>

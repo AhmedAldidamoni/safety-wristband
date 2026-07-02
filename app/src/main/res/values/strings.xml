@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SafeWristband</string>
+    <string name="google_maps_api_key">YOUR_GOOGLE_MAPS_API_KEY_HERE</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_map">Live Map</string>
+    <string name="nav_geofence">Geofence</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_settings">Settings</string>
+</resources>
