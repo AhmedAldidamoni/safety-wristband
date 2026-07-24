@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SafeWristband</string>
+
+    <!-- Navigation -->
+    <string name="nav_dashboard">الرئيسية</string>
+    <string name="nav_live_map">الخريطة</string>
+    <string name="nav_geofence">السياج</string>
+    <string name="nav_alerts">التنبيهات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">الرئيسية</string>
+    <string name="status_connected">متصل</string>
+    <string name="status_connecting">جاري الاتصال…</string>
+    <string name="status_disconnected">غير متصل</string>
+    <string name="status_stale">قديم</string>
+    <string name="pill_online">متصل</string>
+    <string name="pill_offline">غير متصل</string>
+    <string name="pill_moving">متحرك</string>
+    <string name="pill_idle">ثابت</string>
+    <string name="pill_fall">سقوط</string>
+    <string name="pill_sos">SOS</string>
+    <string name="section_live_data">البيانات الحية</string>
+    <string name="current_location">الموقع الحالي</string>
+    <string name="latitude">خط العرض</string>
+    <string name="longitude">خط الطول</string>
+    <string name="accuracy_meters">الدقة: ±%1$.1f م</string>
+    <string name="speed">السرعة</string>
+    <string name="altitude">الارتفاع</string>
+    <string name="gps_accuracy">دقة GPS</string>
+    <string name="movement">الحركة</string>
+    <string name="battery">البطارية</string>
+    <string name="fall_detection">كشف السقوط</string>
+    <string name="fall_detected">تم الكشف عن سقوط</string>
+    <string name="normal">عادي</string>
+    <string name="sos_status">حالة SOS</string>
+    <string name="sos_active">SOS نشط</string>
+    <string name="band_removal">إزالة السوار</string>
+    <string name="removed">تمت الإزالة</string>
+    <string name="worn">مُرتدى</string>
+    <string name="active_alerts">تنبيهات نشطة</string>
+    <string name="last_update">آخر تحديث: %1$s</string>
+    <string name="unknown">غير معروف</string>
+    <string name="unit_meters">م</string>
+    <string name="unit_meters_per_second">م/ث</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">التنبيهات</string>
+    <string name="alerts_subtitle">%1$d تنبيه</string>
+    <string name="no_alerts_yet">لا توجد تنبيهات بعد</string>
+    <string name="clear_history">مسح السجل</string>
+
+    <!-- Alert banners -->
+    <string name="alert_fall_title">تم الكشف عن سقوط</string>
+    <string name="alert_fall_message">تم تفعيل بروتوكول الطوارئ</string>
+    <string name="alert_sos_title">SOS نشط</string>
+    <string name="alert_sos_message">تم إرسال التنبيه لجهات الاتصال الطارئة</string>
+    <string name="alert_band_title">تمت إزالة السوار</string>
+    <string name="alert_band_message">الجهاز غير مُرتدى</string>
+
+    <!-- Settings -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_subtitle">إعدادات السوار</string>
+    <string name="connection">اتصال</string>
+    <string name="wristband_id">معرف السوار: %1$s</string>
+    <string name="appearance">المظهر</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+    <string name="theme_system">تلقائي</string>
+    <string name="danger_zone">منطقة الخطر</string>
+    <string name="clear_history_desc">إزالة جميع تنبيهات السجل المحلي بشكل دائم. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="history_cleared">تمت إزالة جميع تنبيهات السجل المحلي.</string>
+    <string name="clear_local_history">مسح سجل التنبيهات المحلي</string>
+    <string name="history_cleared_button">تم المسح</string>
+    <string name="app_name_display">سوار الأمان</string>
+    <string name="app_tagline">تطبيق مراقبة السلامة الذكي</string>
+
+    <!-- Map -->
+    <string name="map_live_title">الخريطة المباشرة</string>
+    <string name="map_error_location">تعذر تحميل الموقع</string>
+    <string name="auto_follow_toggle">تبديل التتبع التلقائي</string>
+    <string name="auto_follow">تتبع السوار تلقائياً</string>
+    <string name="map_marker_title">السوار</string>
+
+    <!-- Geofence -->
+    <string name="geofence_title">السياج الجغرافي</string>
+    <string name="geofence_tap_to_set">اضغط على الخريطة لتحديد مركز المنطقة الآمنة</string>
+    <string name="geofence_status_inside">داخل المنطقة الآمنة (%.0f م من المركز)</string>
+    <string name="geofence_status_outside">خارج المنطقة الآمنة (%.0f م من المركز)</string>
+    <string name="geofence_status_not_set">لم يتم تكوين السياج الجغرافي بعد</string>
+    <string name="geofence_save">حفظ السياج الجغرافي</string>
+    <string name="geofence_saved">تم الحفظ</string>
+    <string name="geofence_radius">نصف القطر</string>
+    <string name="geofence_safe_zone">مركز المنطقة الآمنة</string>
+    <string name="geofence_wristband_marker">السوار</string>
+
+    <!-- Common -->
+    <string name="something_went_wrong">حدث خطأ ما</string>
+</resources>

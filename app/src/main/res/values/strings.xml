@@ -1,11 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SafeWristband</string>
-    <string name="google_maps_api_key">YOUR_GOOGLE_MAPS_API_KEY_HERE</string>
+    <string name="google_maps_api_key" translatable="false">YOUR_GOOGLE_MAPS_API_KEY_HERE</string>
 
+    <!-- Navigation -->
     <string name="nav_dashboard">Dashboard</string>
-    <string name="nav_map">Live Map</string>
+    <string name="nav_live_map">Map</string>
     <string name="nav_geofence">Geofence</string>
     <string name="nav_alerts">Alerts</string>
     <string name="nav_settings">Settings</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_stale">Stale</string>
+    <string name="pill_online">Online</string>
+    <string name="pill_offline">Offline</string>
+    <string name="pill_moving">Moving</string>
+    <string name="battery">Battery</string>
+    <string name="pill_idle">Idle</string>
+    <string name="pill_fall">Fall</string>
+    <string name="pill_sos">SOS</string>
+    <string name="section_live_data">Live Data</string>
+    <string name="current_location">Current Location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="accuracy_meters">Accuracy: ±%1$.1f m</string>
+    <string name="speed">Speed</string>
+    <string name="altitude">Altitude</string>
+    <string name="gps_accuracy">GPS Accuracy</string>
+    <string name="movement">Movement</string>
+    <string name="fall_detection">Fall Detection</string>
+    <string name="fall_detected">Fall Detected</string>
+    <string name="normal">Normal</string>
+    <string name="sos_status">SOS Status</string>
+    <string name="sos_active">SOS ACTIVE</string>
+    <string name="band_removal">Band Removal</string>
+    <string name="removed">Removed</string>
+    <string name="worn">Worn</string>
+    <string name="active_alerts">Active Alerts</string>
+    <string name="last_update">Last update: %1$s</string>
+    <string name="unknown">Unknown</string>
+    <string name="unit_meters">m</string>
+    <string name="unit_meters_per_second">m/s</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">Alerts</string>
+    <string name="alerts_subtitle">%1$d alerts</string>
+    <string name="no_alerts_yet">No alerts yet</string>
+    <string name="clear_history">Clear history</string>
+
+    <!-- Alert banners -->
+    <string name="alert_fall_title">Fall Detected</string>
+    <string name="alert_fall_message">Emergency protocol activated</string>
+    <string name="alert_sos_title">SOS ACTIVE</string>
+    <string name="alert_sos_message">Alert sent to emergency contacts</string>
+    <string name="alert_band_title">Band Removed</string>
+    <string name="alert_band_message">Device is not being worn</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Configure your wristband</string>
+    <string name="connection">Connection</string>
+    <string name="wristband_id">Wristband ID: %1$s</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">Auto</string>
+    <string name="danger_zone">Danger Zone</string>
+    <string name="clear_history_desc">Permanently remove all locally stored alert events. This action cannot be undone.</string>
+    <string name="history_cleared">All local alert history has been removed.</string>
+    <string name="clear_local_history">Clear Local Alert History</string>
+    <string name="history_cleared_button">History Cleared</string>
+    <string name="app_name_display">SafeWristband</string>
+    <string name="app_tagline">Smart safety monitoring companion</string>
+
+    <!-- Map -->
+    <string name="map_live_title">Live Map</string>
+    <string name="map_error_location">Unable to load location</string>
+    <string name="auto_follow_toggle">Toggle auto-follow</string>
+    <string name="auto_follow">Auto-follow wristband</string>
+    <string name="map_marker_title">Wristband</string>
+
+
+    <!-- Geofence -->
+    <string name="geofence_title">Geofence</string>
+    <string name="geofence_tap_to_set">Tap the map to set the safe zone center</string>
+    <string name="geofence_status_inside">Inside safe zone (%.0f m from center)</string>
+    <string name="geofence_status_outside">Outside safe zone (%.0f m from center)</string>
+    <string name="geofence_status_not_set">No geofence configured yet</string>
+    <string name="geofence_save">Save Geofence</string>
+    <string name="geofence_saved">Saved</string>
+    <string name="geofence_radius">Radius</string>
+    <string name="geofence_safe_zone">Safe zone center</string>
+    <string name="geofence_wristband_marker">Wristband</string>
+
+    <!-- Common -->
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

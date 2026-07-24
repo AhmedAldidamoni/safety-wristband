@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,6 +42,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,29 +53,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.safewristband.tracker.R
 import com.safewristband.tracker.domain.model.AlertEvent
 import com.safewristband.tracker.domain.model.AlertType
 import com.safewristband.tracker.presentation.components.LoadingIndicator
+import com.safewristband.tracker.presentation.theme.AlertRed
+import com.safewristband.tracker.presentation.theme.OkGreen
 import com.safewristband.tracker.util.DateTimeUtils
-
-// ─── Dark Theme Palette ───
-private val DarkBackground = Color(0xFF0B1120)
-private val TextPrimary = Color(0xFFE2E8F0)
-private val TextSecondary = Color(0xFF8B95A5)
-private val TextMuted = Color(0xFF5A6578)
-
-private val OrangeAccent = Color(0xFFFFA726)
-private val OrangeCardBg = Color(0xFF2A1F0F)
-
-private val BlueAccent = Color(0xFF42A5F5)
-private val BlueCardBg = Color(0xFF0F1F2A)
-
-private val GreenAccent = Color(0xFF66BB6A)
-private val GreenCardBg = Color(0xFF0F2A1F)
 
 @Composable
 fun AlertsHistoryScreen(viewModel: AlertsHistoryViewModel = hiltViewModel()) {
@@ -81,14 +72,15 @@ fun AlertsHistoryScreen(viewModel: AlertsHistoryViewModel = hiltViewModel()) {
     val listState = remember { MutableTransitionState(false).apply { targetState = true } }
 
     Scaffold(
-        containerColor = DarkBackground,
-        topBar = { AlertsHeader(alertsCount = uiState.alerts.size, onClear = viewModel::clearHistory) }
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = { AlertsHeader(alertsCount = uiState.alerts.size, onClear = viewModel::clearHistory) },
+        contentWindowInsets = WindowInsets(bottom = 0.dp)
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             when {
                 uiState.isLoading -> LoadingIndicator(modifier = Modifier.align(Alignment.Center))
@@ -108,7 +100,9 @@ fun AlertsHistoryScreen(viewModel: AlertsHistoryViewModel = hiltViewModel()) {
                             items = uiState.alerts,
                             key = { _, alert -> alert.id }
                         ) { index, alert ->
-                            val visible = remember { MutableTransitionState(false).apply { targetState = true } }
+                            val visible = remember {
+                                MutableTransitionState(false).apply { targetState = true }
+                            }
 
                             AnimatedVisibility(
                                 visibleState = visible,
@@ -125,16 +119,14 @@ fun AlertsHistoryScreen(viewModel: AlertsHistoryViewModel = hiltViewModel()) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// HEADER
-// ═══════════════════════════════════════════════════════════════
+// ─── Header ───
 
 @Composable
 private fun AlertsHeader(alertsCount: Int, onClear: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DarkBackground)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp, bottom = 8.dp)
     ) {
@@ -143,26 +135,22 @@ private fun AlertsHeader(alertsCount: Int, onClear: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Clear history button
             IconButton(
                 onClick = onClear,
                 modifier = Modifier.size(40.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.DeleteSweep,
-                    contentDescription = "Clear history",
-                    tint = TextMuted,
+                    contentDescription = stringResource(R.string.clear_history),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(24.dp)
                 )
             }
 
-            // Title + Badge + Bell
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "Alerts",
-                    color = TextPrimary,
+                    text = stringResource(R.string.alerts_title),
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -173,7 +161,7 @@ private fun AlertsHeader(alertsCount: Int, onClear: () -> Unit) {
                     Box(
                         modifier = Modifier
                             .size(24.dp)
-                            .background(Color(0xFFE53935), CircleShape),
+                            .background(AlertRed, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -190,16 +178,15 @@ private fun AlertsHeader(alertsCount: Int, onClear: () -> Unit) {
                 Icon(
                     imageVector = Icons.Filled.NotificationsActive,
                     contentDescription = null,
-                    tint = GreenAccent,
+                    tint = OkGreen,
                     modifier = Modifier.size(24.dp)
                 )
             }
         }
 
-        // Subtitle count
         Text(
-            text = "$alertsCount alerts",
-            color = TextMuted,
+            text = stringResource(R.string.alerts_subtitle, alertsCount),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp,
             modifier = Modifier
                 .align(Alignment.End)
@@ -208,19 +195,21 @@ private fun AlertsHeader(alertsCount: Int, onClear: () -> Unit) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// ALERT CARD
-// ═══════════════════════════════════════════════════════════════
+// ─── Alert Card ───
 
 @Composable
 private fun AlertCard(alert: AlertEvent, modifier: Modifier = Modifier) {
     val theme = alertTheme(alert.type)
 
-    // Subtle pulse for critical alerts
+    val bgAlpha = 0.15f
+    val borderAlpha = 0.50f
+
+    // Critical alerts pulse
+    val isCritical = alert.type == AlertType.SOS_ACTIVATED || alert.type == AlertType.FALL_DETECTED
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val pulseAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.25f,
-        targetValue = if (alert.type == AlertType.SOS_ACTIVATED || alert.type == AlertType.FALL_DETECTED) 0.45f else 0.25f,
+        initialValue = borderAlpha,
+        targetValue = if (isCritical) borderAlpha + 0.15f else borderAlpha,
         animationSpec = infiniteRepeatable(
             animation = tween(1500, easing = EaseInOutSine),
             repeatMode = RepeatMode.Reverse
@@ -230,10 +219,12 @@ private fun AlertCard(alert: AlertEvent, modifier: Modifier = Modifier) {
 
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = theme.cardBackground),
+        colors = CardDefaults.cardColors(
+            containerColor = theme.accentColor.copy(alpha = bgAlpha)
+        ),
         border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            theme.accentColor.copy(alpha = pulseAlpha)
+            1.5.dp,
+            theme.accentColor.copy(alpha = if (isCritical) pulseAlpha else borderAlpha)
         ),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -249,10 +240,10 @@ private fun AlertCard(alert: AlertEvent, modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.weight(1f)
             ) {
-                // Status indicator dot
+                // Glowing status dot
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(10.dp)
                         .background(theme.accentColor, CircleShape)
                 )
 
@@ -271,36 +262,24 @@ private fun AlertCard(alert: AlertEvent, modifier: Modifier = Modifier) {
 
                     Text(
                         text = DateTimeUtils.formatDateTime(alert.timestamp),
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 13.sp
                     )
-
-                    // If your AlertEvent model has lat/lng, uncomment:
-                    // alert.latitude?.let { lat ->
-                    //     alert.longitude?.let { lng ->
-                    //         Spacer(modifier = Modifier.height(2.dp))
-                    //         Text(
-                    //             text = String.format(Locale.US, "%.5f, %.5f", lat, lng),
-                    //             color = TextMuted,
-                    //             fontSize = 12.sp
-                    //         )
-                    //     }
-                    // }
                 }
             }
 
-            // Right: Icon in circle
+            // Right: Icon in tinted circle
             Box(
                 modifier = Modifier
-                    .size(44.dp)
-                    .background(theme.accentColor.copy(alpha = 0.12f), CircleShape),
+                    .size(48.dp)
+                    .background(theme.accentColor.copy(alpha = 0.18f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = theme.icon,
                     contentDescription = null,
                     tint = theme.accentColor,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(26.dp)
                 )
             }
         }
@@ -320,48 +299,53 @@ private fun EmptyState(modifier: Modifier = Modifier) {
         Icon(
             imageVector = Icons.Filled.NotificationsActive,
             contentDescription = null,
-            tint = TextMuted.copy(alpha = 0.5f),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
             modifier = Modifier.size(72.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No alerts yet",
-            color = TextSecondary,
+            text = stringResource(R.string.no_alerts_yet),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 16.sp
         )
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// THEME MAPPING
-// ═══════════════════════════════════════════════════════════════
+// ─── Theme Mapping ───
 
 private data class AlertTheme(
     val icon: ImageVector,
-    val accentColor: Color,
-    val cardBackground: Color
+    val accentColor: Color
 )
 
+@Composable
 private fun alertTheme(type: AlertType): AlertTheme = when (type) {
     AlertType.SOS_ACTIVATED -> AlertTheme(
-        Icons.Filled.NotificationsActive, OrangeAccent, OrangeCardBg
+        Icons.Filled.NotificationsActive,
+        Color(0xFFF43F5E)
     )
     AlertType.FALL_DETECTED -> AlertTheme(
-        Icons.Filled.Warning, OrangeAccent, OrangeCardBg
+        Icons.Filled.Warning,
+        Color(0xFF8B5CF6)
     )
     AlertType.WRISTBAND_REMOVED -> AlertTheme(
-        Icons.Filled.PersonOff, OrangeAccent, OrangeCardBg
+        Icons.Filled.PersonOff,
+        Color(0xFFF59E0B)
     )
     AlertType.GEOFENCE_EXITED -> AlertTheme(
-        Icons.Filled.LocationOff, OrangeAccent, OrangeCardBg
+        Icons.Filled.LocationOff,
+        Color(0xFF3B82F6)
     )
     AlertType.GEOFENCE_ENTERED -> AlertTheme(
-        Icons.Filled.LocationOn, GreenAccent, GreenCardBg
+        Icons.Filled.LocationOn,
+        Color(0xFF10B981)
     )
     AlertType.CONNECTION_LOST -> AlertTheme(
-        Icons.Filled.CloudOff, BlueAccent, BlueCardBg
+        Icons.Filled.CloudOff,
+        Color(0xFFF59E0B)
     )
     AlertType.CONNECTION_RESTORED -> AlertTheme(
-        Icons.AutoMirrored.Filled.DirectionsWalk, BlueAccent, BlueCardBg
+        Icons.AutoMirrored.Filled.DirectionsWalk,
+        Color(0xFF06B6D4)
     )
 }

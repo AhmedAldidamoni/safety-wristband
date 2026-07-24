@@ -32,7 +32,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.CloudQueue
@@ -49,6 +48,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,27 +60,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.safewristband.tracker.R
 import com.safewristband.tracker.domain.model.ConnectionStatus
 import com.safewristband.tracker.domain.model.ThemeMode
-import com.safewristband.tracker.presentation.theme.SafeWristbandTheme
-
-// ─── Dark Theme Palette (same as Dashboard & Alerts) ───
-private val DarkBackground = Color(0xFF0B1120)
-private val CardBackground = Color(0xFF151B2B)
-private val TealAccent = Color(0xFF00D9C0)
-private val TealGlow = TealAccent.copy(alpha = 0.15f)
-private val TextPrimary = Color(0xFFE2E8F0)
-private val TextSecondary = Color(0xFF8B95A5)
-private val TextMuted = Color(0xFF5A6578)
-private val AlertRed = Color(0xFFEF5350)
-private val AlertRedBg = Color(0xFF2A1515)
-private val OkGreen = Color(0xFF66BB6A)
-private val WarningAmber = Color(0xFFFFA726)
+import com.safewristband.tracker.presentation.theme.AlertRed
+import com.safewristband.tracker.presentation.theme.OkGreen
+import com.safewristband.tracker.presentation.theme.WarningAmber
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
@@ -90,14 +80,13 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            // ─── Custom Header ───
             SettingsHeader()
 
             AnimatedVisibility(
@@ -108,22 +97,18 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
-                    // ─── Connection Status Card ───
                     ConnectionStatusCard(
                         status = uiState.connectionStatus,
                         wristbandId = uiState.settings.selectedWristbandId
                     )
 
-                    // ─── Theme Selector ───
                     ThemeSelectorCard(
                         currentMode = uiState.settings.themeMode,
                         onModeSelected = viewModel::setThemeMode
                     )
 
-                    // ─── Application Info ───
                     AppInfoCard()
 
-                    // ─── Danger Zone: Clear History ───
                     DangerActionCard(
                         isCleared = uiState.historyCleared,
                         onClear = viewModel::clearAlertHistory
@@ -131,16 +116,15 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // ─── Footer ───
                     Text(
-                        text = "SafeWristband v1.0.0",
-                        color = TextMuted,
+                        text = stringResource(R.string.app_name_display),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 12.sp,
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                     Text(
-                        text = "Smart safety monitoring companion",
-                        color = TextMuted.copy(alpha = 0.7f),
+                        text = stringResource(R.string.app_tagline),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                         fontSize = 11.sp,
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
@@ -152,9 +136,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// HEADER
-// ═══════════════════════════════════════════════════════════════
+// ─── Header ───
 
 @Composable
 private fun SettingsHeader() {
@@ -168,13 +150,16 @@ private fun SettingsHeader() {
         Box(
             modifier = Modifier
                 .size(44.dp)
-                .background(TealAccent.copy(alpha = 0.12f), CircleShape),
+                .background(
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                    CircleShape
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Filled.Settings,
                 contentDescription = null,
-                tint = TealAccent,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -183,31 +168,37 @@ private fun SettingsHeader() {
 
         Column {
             Text(
-                text = "Settings",
-                color = TextPrimary,
+                text = stringResource(R.string.settings_title),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Configure your wristband",
-                color = TextSecondary,
+                text = stringResource(R.string.settings_subtitle),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp
             )
         }
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// CONNECTION STATUS CARD
-// ═══════════════════════════════════════════════════════════════
+// ─── Connection Card ───
 
 @Composable
 private fun ConnectionStatusCard(status: ConnectionStatus, wristbandId: String) {
     val (statusText, statusColor, statusIcon) = when (status) {
-        ConnectionStatus.CONNECTED -> Triple("Connected", OkGreen, Icons.Filled.CloudDone)
-        ConnectionStatus.STALE -> Triple("Stale Data", WarningAmber, Icons.Filled.CloudQueue)
-        ConnectionStatus.DISCONNECTED -> Triple("Disconnected", AlertRed, Icons.Filled.CloudOff)
-        ConnectionStatus.CONNECTING -> Triple("Connecting...", WarningAmber, Icons.Filled.Sync)
+        ConnectionStatus.CONNECTED -> Triple(
+            stringResource(R.string.status_connected), OkGreen, Icons.Filled.CloudDone
+        )
+        ConnectionStatus.STALE -> Triple(
+            stringResource(R.string.status_stale), WarningAmber, Icons.Filled.CloudQueue
+        )
+        ConnectionStatus.DISCONNECTED -> Triple(
+            stringResource(R.string.status_disconnected), AlertRed, Icons.Filled.CloudOff
+        )
+        ConnectionStatus.CONNECTING -> Triple(
+            stringResource(R.string.status_connecting), WarningAmber, Icons.Filled.Sync
+        )
     }
 
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
@@ -227,7 +218,6 @@ private fun ConnectionStatusCard(status: ConnectionStatus, wristbandId: String) 
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Animated status dot
                 Box(
                     modifier = Modifier
                         .size(10.dp)
@@ -241,8 +231,8 @@ private fun ConnectionStatusCard(status: ConnectionStatus, wristbandId: String) 
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(
-                    text = "Firebase",
-                    color = TextSecondary,
+                    text = stringResource(R.string.connection),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -269,33 +259,34 @@ private fun ConnectionStatusCard(status: ConnectionStatus, wristbandId: String) 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "Wristband ID: $wristbandId",
-                color = TextMuted,
+                text = stringResource(R.string.wristband_id, wristbandId),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 13.sp
             )
         }
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// THEME SELECTOR CARD
-// ═══════════════════════════════════════════════════════════════
+// ─── Theme Selector ───
 
 @Composable
-private fun ThemeSelectorCard(currentMode: ThemeMode, onModeSelected: (ThemeMode) -> Unit) {
+private fun ThemeSelectorCard(
+    currentMode: ThemeMode,
+    onModeSelected: (ThemeMode) -> Unit
+) {
     SettingsCard {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Filled.Palette,
                     contentDescription = null,
-                    tint = TealAccent,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Appearance",
-                    color = TextPrimary,
+                    text = stringResource(R.string.appearance),
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -310,15 +301,27 @@ private fun ThemeSelectorCard(currentMode: ThemeMode, onModeSelected: (ThemeMode
                 ThemeMode.entries.forEach { mode ->
                     val isSelected = currentMode == mode
                     val (icon, label) = when (mode) {
-                        ThemeMode.LIGHT -> Icons.Filled.WbSunny to "Light"
-                        ThemeMode.DARK -> Icons.Filled.NightsStay to "Dark"
-                        ThemeMode.SYSTEM -> Icons.Filled.SettingsSuggest to "Auto"
+                        ThemeMode.LIGHT -> Icons.Filled.WbSunny to stringResource(R.string.theme_light)
+                        ThemeMode.DARK -> Icons.Filled.NightsStay to stringResource(R.string.theme_dark)
+                        ThemeMode.SYSTEM -> Icons.Filled.SettingsSuggest to stringResource(R.string.theme_system)
                     }
 
-                    val bgColor = if (isSelected) TealGlow else Color.Transparent
-                    val borderColor = if (isSelected) TealAccent else TextMuted.copy(alpha = 0.3f)
-                    val iconTint = if (isSelected) TealAccent else TextMuted
-                    val textColor = if (isSelected) TextPrimary else TextMuted
+                    val bgColor = if (isSelected)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                    else
+                        Color.Transparent
+                    val borderColor = if (isSelected)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                    val iconTint = if (isSelected)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    val textColor = if (isSelected)
+                        MaterialTheme.colorScheme.onSurface
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -350,9 +353,7 @@ private fun ThemeSelectorCard(currentMode: ThemeMode, onModeSelected: (ThemeMode
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// APP INFO CARD
-// ═══════════════════════════════════════════════════════════════
+// ─── App Info ───
 
 @Composable
 private fun AppInfoCard() {
@@ -366,13 +367,16 @@ private fun AppInfoCard() {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(TealAccent.copy(alpha = 0.1f), RoundedCornerShape(14.dp)),
+                    .background(
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        RoundedCornerShape(14.dp)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Filled.Watch,
                     contentDescription = null,
-                    tint = TealAccent,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(26.dp)
                 )
             }
@@ -381,56 +385,55 @@ private fun AppInfoCard() {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "SafeWristband",
-                    color = TextPrimary,
+                    text = stringResource(R.string.app_name_display),
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "Smart safety monitoring companion app.",
-                    color = TextSecondary,
+                    text = stringResource(R.string.app_tagline),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 13.sp,
                     lineHeight = 18.sp
                 )
             }
-
-            Icon(
-                imageVector = Icons.Filled.ChevronRight,
-                contentDescription = null,
-                tint = TextMuted,
-                modifier = Modifier.size(20.dp)
-            )
         }
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// DANGER ACTION CARD
-// ═══════════════════════════════════════════════════════════════
+// ─── Danger Zone ───
 
 @Composable
 private fun DangerActionCard(isCleared: Boolean, onClear: () -> Unit) {
     val scale by animateFloatAsState(
         targetValue = if (isCleared) 0.98f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow),
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
         label = "scale"
     )
 
-    SettingsCard(
-        backgroundColor = if (isCleared) CardBackground else AlertRedBg
+    val cardBg = if (isCleared) MaterialTheme.colorScheme.surface else
+        MaterialTheme.colorScheme.errorContainer
+
+    Card(
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = cardBg),
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Filled.Warning,
                     contentDescription = null,
-                    tint = if (isCleared) TextMuted else AlertRed,
+                    tint = if (isCleared) MaterialTheme.colorScheme.onSurfaceVariant else AlertRed,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Danger Zone",
-                    color = if (isCleared) TextMuted else AlertRed,
+                    text = stringResource(R.string.danger_zone),
+                    color = if (isCleared) MaterialTheme.colorScheme.onSurfaceVariant else AlertRed,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -440,10 +443,10 @@ private fun DangerActionCard(isCleared: Boolean, onClear: () -> Unit) {
 
             Text(
                 text = if (isCleared)
-                    "All local alert history has been removed."
+                    stringResource(R.string.history_cleared)
                 else
-                    "Permanently remove all locally stored alert events. This action cannot be undone.",
-                color = TextSecondary,
+                    stringResource(R.string.clear_history_desc),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 13.sp,
                 lineHeight = 18.sp
             )
@@ -455,10 +458,18 @@ private fun DangerActionCard(isCleared: Boolean, onClear: () -> Unit) {
                 enabled = !isCleared,
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = if (isCleared) TextMuted else AlertRed
+                    contentColor = if (isCleared)
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    else
+                        AlertRed
                 ),
                 border = ButtonDefaults.outlinedButtonBorder().copy(
-                    brush = androidx.compose.ui.graphics.SolidColor(if (isCleared) TextMuted.copy(alpha = 0.3f) else AlertRed.copy(alpha = 0.5f))
+                    brush = androidx.compose.ui.graphics.SolidColor(
+                        if (isCleared)
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                        else
+                            AlertRed.copy(alpha = 0.5f)
+                    )
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -471,7 +482,10 @@ private fun DangerActionCard(isCleared: Boolean, onClear: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (isCleared) "History Cleared" else "Clear Local Alert History",
+                    text = if (isCleared)
+                        stringResource(R.string.history_cleared_button)
+                    else
+                        stringResource(R.string.clear_local_history),
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -479,53 +493,15 @@ private fun DangerActionCard(isCleared: Boolean, onClear: () -> Unit) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// REUSABLE CARD
-// ═══════════════════════════════════════════════════════════════
+// ─── Reusable Card ───
 
 @Composable
-private fun SettingsCard(
-    backgroundColor: Color = CardBackground,
-    content: @Composable () -> Unit
-) {
+private fun SettingsCard(content: @Composable () -> Unit) {
     Card(
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         modifier = Modifier.fillMaxWidth()
     ) {
         content()
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// PREVIEW
-// ═══════════════════════════════════════════════════════════════
-
-@Preview(showBackground = true, backgroundColor = 0xFF0B1120)
-@Composable
-private fun SettingsScreenPreview() {
-    // Mock preview data
-    SafeWristbandTheme(darkTheme = true) {
-        Box(modifier = Modifier.background(DarkBackground)) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)
-            ) {
-                SettingsHeader()
-                ConnectionStatusCard(
-                    status = ConnectionStatus.CONNECTED,
-                    wristbandId = "WB-7842-Alpha"
-                )
-                ThemeSelectorCard(
-                    currentMode = ThemeMode.DARK,
-                    onModeSelected = {}
-                )
-                AppInfoCard()
-                DangerActionCard(isCleared = false, onClear = {})
-            }
-        }
     }
 }
