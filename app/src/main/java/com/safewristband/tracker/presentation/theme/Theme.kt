@@ -17,6 +17,7 @@ private val LightColors = lightColorScheme(
     secondary = SafetyTealLight,
     tertiary = WarningAmber,
     error = AlertRed,
+    errorContainer = ErrorContainerLight,
     background = SurfaceLight,
     surface = SurfaceContainerLight
 )
@@ -27,6 +28,7 @@ private val DarkColors = darkColorScheme(
     secondary = SafetyTeal,
     tertiary = WarningAmber,
     error = AlertRed,
+    errorContainer = ErrorContainerDark,
     background = SurfaceDark,
     surface = SurfaceContainerDark
 )

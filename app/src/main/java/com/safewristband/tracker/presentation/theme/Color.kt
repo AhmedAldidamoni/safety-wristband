@@ -14,3 +14,6 @@ val SurfaceLight = Color(0xFFF7FAF9)
 val SurfaceDark = Color(0xFF0B1413)
 val SurfaceContainerLight = Color(0xFFFFFFFF)
 val SurfaceContainerDark = Color(0xFF152220)
+
+val ErrorContainerLight = Color(0xFFFFEBEE)
+val ErrorContainerDark = Color(0xFF2A1515)
