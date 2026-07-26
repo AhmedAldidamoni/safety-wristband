@@ -79,9 +79,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.analytics)
 
-    implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
-    implementation(libs.maps.compose)
 
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
@@ -89,4 +87,7 @@ dependencies {
     implementation(libs.datastore.preferences)
 
     implementation(libs.accompanist.permissions)
+
+    implementation(libs.maplibre.sdk)
+    implementation(libs.maplibre.plugin.annotation)
 }
