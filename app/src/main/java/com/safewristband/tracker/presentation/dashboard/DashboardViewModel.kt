@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.safewristband.tracker.domain.model.AlertEvent
 import com.safewristband.tracker.domain.model.AlertType
+import com.safewristband.tracker.domain.model.WristbandData
 import com.safewristband.tracker.domain.usecase.AddAlertUseCase
 import com.safewristband.tracker.domain.usecase.ObserveAlertsUseCase
 import com.safewristband.tracker.domain.usecase.ObserveConnectionStatusUseCase
@@ -14,8 +15,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,58 +38,87 @@ class DashboardViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            observeSettingsUseCase().distinctUntilChanged { old, new -> old.selectedWristbandId == new.selectedWristbandId }
-                .collect { settings ->
-                    observeData(settings.selectedWristbandId)
-                }
+            observeSettingsUseCase().distinctUntilChanged { old, new ->
+                old.selectedWristbandId == new.selectedWristbandId
+            }.collect { settings ->
+                observeData(settings.selectedWristbandId)
+                observeConnectionState(settings.selectedWristbandId)
+                observeAlerts()
+            }
         }
     }
 
-    private fun observeData(wristbandId: String) {
-        viewModelScope.launch {
-            combine(
-                observeWristbandDataUseCase(wristbandId),
-                observeConnectionStatusUseCase(wristbandId),
-                observeAlertsUseCase()
-            ) { dataResource, connectionStatus, alerts ->
-                Triple(dataResource, connectionStatus, alerts)
-            }.collect { (dataResource, connectionStatus, alerts) ->
-                when (dataResource) {
-                    is Resource.Loading -> _uiState.value = _uiState.value.copy(isLoading = true)
-                    is Resource.Error -> _uiState.value = _uiState.value.copy(
+    private fun observeData(wristbandId: String) = viewModelScope.launch {
+        observeWristbandDataUseCase(wristbandId).collect { dataResource ->
+            when (dataResource) {
+                is Resource.Loading -> _uiState.update { it.copy(isLoading = true) }
+                is Resource.Error -> _uiState.update {
+                    it.copy(
                         isLoading = false,
-                        errorMessage = dataResource.message,
-                        connectionStatus = connectionStatus
+                        errorMessage = dataResource.message
                     )
-                    is Resource.Success -> {
-                        checkForNewAlerts(dataResource.data.fallDetected, dataResource.data.sos, dataResource.data.bandRemoved)
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            wristbandData = dataResource.data,
-                            connectionStatus = connectionStatus,
-                            errorMessage = null,
-                            activeAlerts = alerts.take(5)
-                        )
-                    }
+                }
+                is Resource.Success -> _uiState.update {
+                    checkForNewAlerts(dataResource.data)
+                    it.copy(
+                        isLoading = false,
+                        wristbandData = dataResource.data,
+                        errorMessage = null
+                    )
                 }
             }
         }
     }
 
-    private fun checkForNewAlerts(fallDetected: Boolean, sos: Boolean, bandRemoved: Boolean) {
+    private fun observeConnectionState(wristbandId: String) = viewModelScope.launch {
+        observeConnectionStatusUseCase(wristbandId).collect { connectionStatus ->
+            _uiState.update {
+                it.copy(connectionStatus = connectionStatus)
+            }
+        }
+    }
+
+    private fun observeAlerts() = viewModelScope.launch {
+        observeAlertsUseCase().collect { alerts ->
+            _uiState.update {
+                it.copy(activeAlerts = alerts)
+            }
+        }
+    }
+
+    private fun checkForNewAlerts(data: WristbandData) {
         viewModelScope.launch {
-            if (sos && !previousSos) {
-                addAlertUseCase(AlertEvent(type = AlertType.SOS_ACTIVATED, message = "SOS activated", timestamp = System.currentTimeMillis()))
-            }
-            if (fallDetected && !previousFallDetected) {
-                addAlertUseCase(AlertEvent(type = AlertType.FALL_DETECTED, message = "Fall detected", timestamp = System.currentTimeMillis()))
-            }
-            if (bandRemoved && !previousBandRemoved) {
-                addAlertUseCase(AlertEvent(type = AlertType.WRISTBAND_REMOVED, message = "Wristband removed", timestamp = System.currentTimeMillis()))
-            }
-            previousSos = sos
-            previousFallDetected = fallDetected
-            previousBandRemoved = bandRemoved
+            if (data.sos && !previousSos) addAlertUseCase(
+                AlertEvent(
+                    type = AlertType.SOS_ACTIVATED,
+                    message = "SOS activated",
+                    timestamp = System.currentTimeMillis(),
+                    latitude = data.latitude,
+                    longitude = data.longitude
+                )
+            )
+            if (data.fallDetected && !previousFallDetected) addAlertUseCase(
+                AlertEvent(
+                    type = AlertType.FALL_DETECTED,
+                    message = "Fall detected",
+                    timestamp = System.currentTimeMillis(),
+                    latitude = data.latitude,
+                    longitude = data.longitude
+                )
+            )
+            if (data.bandRemoved && !previousBandRemoved) addAlertUseCase(
+                AlertEvent(
+                    type = AlertType.WRISTBAND_REMOVED,
+                    message = "Wristband removed",
+                    timestamp = System.currentTimeMillis(),
+                    latitude = data.latitude,
+                    longitude = data.longitude
+                )
+            )
+
+            previousSos = data.sos
+            previousFallDetected = data.fallDetected
+            previousBandRemoved = data.bandRemoved
         }
     }
 }
