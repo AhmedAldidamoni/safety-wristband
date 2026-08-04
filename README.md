@@ -33,7 +33,7 @@ Open the project folder directly in Android Studio (Quail | 2026.1.1 or newer). 
 
 ### 2. Firebase
 
-- Create a Firebase project, add an Android app with package name `com.safewristband.tracker`.
+- Create a Firebase project, add an Android app with package name `com.safetywristband.tracker`.
 - Download the real `google-services.json` and place it at `app/google-services.json` (a placeholder template is at `app/google-services.json.example` — replace it, don't just rename it).
 - Enable **Realtime Database** in the Firebase console. Data is expected at:
   ```
@@ -68,8 +68,8 @@ Select a device/emulator and run the `app` configuration. The app works on both 
 ## Architecture / folder structure
 
 ```
-app/src/main/java/com/safewristband/tracker/
-  SafeWristbandApplication.kt    # MapLibre one-time initialization
+app/src/main/java/com/safetywristband/tracker/
+  SafetyWristbandApplication.kt    # MapLibre one-time initialization
   di/                            # Hilt modules (Firebase, Room, DataStore, repository bindings)
   domain/                        # model/ repository interfaces/ usecase/ — pure Kotlin, no Android deps
   data/                          # remote/ (Firebase data source + DTOs), local/ (Room + DataStore), repository/ (impls)

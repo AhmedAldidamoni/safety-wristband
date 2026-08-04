@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SafeWristband"
+rootProject.name = "SafetyWristband"
 include(":app")
