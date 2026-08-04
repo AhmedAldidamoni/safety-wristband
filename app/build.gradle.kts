@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "com.safewristband.tracker"
+    namespace = "com.safetywristband.tracker"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.safewristband.tracker"
+        applicationId = "com.safetywristband.tracker"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
